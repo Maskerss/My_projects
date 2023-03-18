@@ -1,0 +1,87 @@
+from vosk import Model, KaldiRecognizer
+import ffmpeg
+from easy_playlist import *
+import os, json
+import pyaudio
+import sounddevice as sd
+from pydub import AudioSegment
+from pydub.playback import play
+from pygame import mixer
+import vlc
+
+p=vlc.MediaPlayer(r'C:\Users\Константин\AppData\Local\Programs\Algoritmika\vscode\data\extensions\algoritmika.algopython-20230221.174607.0\temp\folder\Виктор_Цой_Скоро_кончится_лето_fonk.mp3')
+defolt = vlc.MediaList()
+midncl = vlc.Media("Midnight Club.mp3")
+defolt.add_media(midncl)
+
+#p.get_instance() # returns the corresponding instance
+
+#sound = AudioSegment.from_file("Komarovo.mp3", format="mp3")
+#play(sound)
+'''pls = Playlists()
+pls.add_playlist("defolt")
+defolt = pls.get_playlist("defolt")
+pls.add_playlist("private")
+private = pls.get_playlist("private")
+
+defolt.add_music(["Komarovo.mp3","Midnight Club.mp3"])'''
+#mixer.init()
+#leto = mixer.Sound('Виктор_Цой_Скоро_кончится_лето_fonk.mp3')
+'''drip = mixer.Sound('ДРИПСЕТ.mp3')
+polozhenie = mixer.Sound('Скриптонит - Положение.mp3')
+aglow = mixer.Sound('Aglow.mp3')
+astrsttep = mixer.Sound('astral-step.mp3')
+dancin = mixer.Sound('Dancin.mp3')
+dancmyroom = mixer.Sound('Dancing in My Room.mp3')
+decapitator = mixer.Sound('Decapitator.mp3')
+devileyes = mixer.Sound('Devil Eyes.mp3')'''
+'''empathy = mixer.Sound('Empathy.mp3')
+fiedegraees = mixer.Sound('Five Degrees.mp3')
+gimmetheloot = mixer.Sound('Gimme The Loot.mp3')
+idfc = mixer.Sound('idfc.mp3')
+terminal = mixer.Sound('LILDRUGHILL feat. ROCKET - Терминал.mp3')
+mezhdynami = mixer.Sound('LIZER - Между Нами.mp3')
+twominutes = mixer.Sound('Markul - 2 минуты.mp3')
+twentyfive = mixer.Sound('Markul - 25.mp3')
+dengynaveter = mixer.Sound('Markul - Деньги на ветер.mp3')
+konfety = mixer.Sound('Markul - Конфеты.mp3')
+mirazhy = mixer.Sound('Markul - Миражи.mp3')
+serpantin = mixer.Sound('Markul - Серпантин.mp3')
+phantom = mixer.Sound('Markul - Phantom.mp3')
+maskoff = mixer.Sound('Mask Off.mp3')'''
+#defolt.play()
+y = 'dfhdsdfwaszggffgfsd'
+model = Model('model')
+rec = KaldiRecognizer(model, 16000)
+pya = pyaudio.PyAudio()
+stream = pya.open(format=pyaudio.paInt16, channels = 2, rate = 8000, input=True, frames_per_buffer=44100)
+stream.start_stream()
+while y != 'отключи микрофон' and y != 'подключи микрофон' and y != 'выключи микрофон' and y != 'включи микрофон' :
+data = stream.read(4000)
+if len(data) == 0:
+break
+if rec.AcceptWaveform(data):
+x = json.loads(rec.Result())
+print(x['text'])
+y = x['text']
+#доделать эту хрень снизу
+if y == 'включи музыку' or y == 'печи музыку':
+#defolt.play()
+#leto.play()
+defolt.play()
+y = 'fhgdfsdfvh jblkdfjs'
+if y == 'выключи музыку':
+#defolt.stop()
+#private.stop()
+y = 'fhgdfsdfvh jblkdfjs'
+if y == 'поставь на паузу' or y == 'поставь на полу' or y == 'пока на паузу':
+#defolt.pause()
+y = 'fhgdfsdfvh jblkdfjs'
+if y == 'возобновить' or y == 'выгодной' or y == 'выгодно ли':
+#defolt.resume()
+y = 'fhgdfsdfvh jblkdfjs'
+if y == 'протокол я один дома' or y == 'протокол один дома' or y == 'один дома'or y == 'а какую я один дом' or y == 'протокол я аденома' or y == 'протокол и один дома' or y == 'по такого и один дома' or y == 'по такого один дома' or y == 'атакуя и один дом' or y == 'атакуя один дом' or y == 'атакуя один дома' or y == 'протокол аденома':
+#private.play()
+y = 'dfhkdfsjkdlfsjfklfhdsc,kxckj'
+else:
+pass
