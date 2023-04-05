@@ -1,87 +1,185 @@
 from vosk import Model, KaldiRecognizer
 import ffmpeg
-from easy_playlist import *
 import os, json
 import pyaudio
 import sounddevice as sd
-from pydub import AudioSegment
-from pydub.playback import play
-from pygame import mixer
 import vlc
+import pyaudio
+from pygame import mixer
+import pyautogui as pag
+import random as ran
+import time
+import webbrowser as web
+#P.s. Дошёл до SFALL Row....
 
-p=vlc.MediaPlayer(r'C:\Users\Константин\AppData\Local\Programs\Algoritmika\vscode\data\extensions\algoritmika.algopython-20230221.174607.0\temp\folder\Виктор_Цой_Скоро_кончится_лето_fonk.mp3')
-defolt = vlc.MediaList()
-midncl = vlc.Media("Midnight Club.mp3")
-defolt.add_media(midncl)
+p = vlc
+playlist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3',"Komarovo.mp3",'Nirvana - Smells Like Teen Spirit.mp3','Dancing in My Room.mp3' ,'Dancin.mp3' ,'Five Degrees.mp3' ,
+'Decapitator.mp3' ,'Devil Eyes.mp3' , 'idfc.mp3','MONTERO.mp3' ,'Old Town Road.mp3','RagnBone Man - Human.mp3','Miyagi _ Andy Panda - Патрон.mp3','Seven Phoenix, PHAM - FOR U.mp3',
+'Old Town Road.mp3','Oliver Tree - Jerk.mp3','Pham, Malcolm Anthony - My Town.mp3','SFALL - row.mp3','Sam_Tinnesz_feat_Yacht_Money_Play_with_Fire_feat_Yacht_Money.mp3',
+'Real cool man.mp3','Mask Off.mp3'])
+defolt = p.MediaListPlayer()
+defolt.set_media_list(playlist)
+niggalist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3',"Komarovo.mp3",'Dancing in My Room.mp3' ,'Dancin.mp3' ,'astral-step.mp3','S.X.N.D. N.X.D.E.S..mp3',
+'Scary Garry.mp3','Nirvana - Smells Like Teen Spirit.mp3','ДРИПСЕТ.mp3' ,'Gimme The Loot.mp3','PUSHNOY_NIRVENUS_2_0_NIRVANA_&_Shocking_Blue_mashup_MP3Ball_ru.mp3',
+'LILDRUGHILL feat. ROCKET - Терминал.mp3','MONTERO.mp3','Miyagi _ Andy Panda - Патрон.mp3','Old Town Road.mp3','Oliver Tree - Jerk.mp3','Pham, Malcolm Anthony - My Town.mp3',
+'RagnBone Man - Human.mp3','Real cool man.mp3','Sam_Tinnesz_feat_Yacht_Money_Play_with_Fire_feat_Yacht_Money.mp3',
+'SFALL - row.mp3',
+'Скриптонит - Положение.mp3' , 'Decapitator.mp3','Empathy.mp3','Five Degrees.mp3' ,'Devil Eyes.mp3','idfc.mp3' ,'LIZER - Между Нами.mp3','PHARAOH - Мой кайф.mp3',
+'Seven Phoenix, PHAM - FOR U.mp3','PHARAOH - Не по пути.mp3','Markul - Миражи.mp3','Markul - 2 минуты.mp3','Markul - Phantom.mp3','Markul - Деньги на ветер.mp3','Markul - 25.mp3',
+'Markul - Серпантин.mp3','Markul - Конфеты.mp3','plenka - Closed.mp3','Aglow.mp3','Mask Off.mp3'])
+private = p.MediaListPlayer()
+private.set_media_list(playlist)
+#Ответы Джарвиса
+mixer.init()
+yes1 = mixer.Sound('Да сэр.wav')
+yes2 = mixer.Sound('Да сэр(второй).wav')
+yest = mixer.Sound('Есть.wav')
+load = mixer.Sound('Загружаю сэр.wav')
+zhel = mixer.Sound('Как пожелаете .wav')
+yslyg = mixer.Sound('К вашим услугам сэр.wav')
+zapr = mixer.Sound('Запрос выполнен сэр.wav')
+re = mixer.Sound('Я перезагрузился сэр.wav')
+diag1 = mixer.Sound('Начинаю диагностику системы.wav')
+diag2 = mixer.Sound('Начинаю диагностику системы (второй).wav')
+check_end = mixer.Sound('Проверка завершена.wav')
 
-#p.get_instance() # returns the corresponding instance
+def diag():
+    s = diag1.play, diag2.play, zhel.play, yes1.play, yes2.play, yest.play
+    chosen = ran.choice(s)
+    chosen()
+def come():
+    r = yslyg.play, re.play, check_end.play
+    chosen = ran.choice(r)
+    chosen()
 
-#sound = AudioSegment.from_file("Komarovo.mp3", format="mp3")
-#play(sound)
-'''pls = Playlists()
-pls.add_playlist("defolt")
-defolt = pls.get_playlist("defolt")
-pls.add_playlist("private")
-private = pls.get_playlist("private")
-
-defolt.add_music(["Komarovo.mp3","Midnight Club.mp3"])'''
-#mixer.init()
-#leto = mixer.Sound('Виктор_Цой_Скоро_кончится_лето_fonk.mp3')
-'''drip = mixer.Sound('ДРИПСЕТ.mp3')
-polozhenie = mixer.Sound('Скриптонит - Положение.mp3')
-aglow = mixer.Sound('Aglow.mp3')
-astrsttep = mixer.Sound('astral-step.mp3')
-dancin = mixer.Sound('Dancin.mp3')
-dancmyroom = mixer.Sound('Dancing in My Room.mp3')
-decapitator = mixer.Sound('Decapitator.mp3')
-devileyes = mixer.Sound('Devil Eyes.mp3')'''
-'''empathy = mixer.Sound('Empathy.mp3')
-fiedegraees = mixer.Sound('Five Degrees.mp3')
-gimmetheloot = mixer.Sound('Gimme The Loot.mp3')
-idfc = mixer.Sound('idfc.mp3')
-terminal = mixer.Sound('LILDRUGHILL feat. ROCKET - Терминал.mp3')
-mezhdynami = mixer.Sound('LIZER - Между Нами.mp3')
-twominutes = mixer.Sound('Markul - 2 минуты.mp3')
-twentyfive = mixer.Sound('Markul - 25.mp3')
-dengynaveter = mixer.Sound('Markul - Деньги на ветер.mp3')
-konfety = mixer.Sound('Markul - Конфеты.mp3')
-mirazhy = mixer.Sound('Markul - Миражи.mp3')
-serpantin = mixer.Sound('Markul - Серпантин.mp3')
-phantom = mixer.Sound('Markul - Phantom.mp3')
-maskoff = mixer.Sound('Mask Off.mp3')'''
-#defolt.play()
-y = 'dfhdsdfwaszggffgfsd'
+def sogl():
+    l = yes1.play, yes2.play, yest.play, load.play, zhel.play
+    chosen = ran.choice(l)
+    chosen()
+#ссылки
+ytb = 'https://www.youtube.com/results?search_query='
+www = 'https://www.google.com/search?q='
+#нужные пременные
+end = True
+f = False
+#инициализация микрофона и распознавания речи
 model = Model('model')
 rec = KaldiRecognizer(model, 16000)
 pya = pyaudio.PyAudio()
 stream = pya.open(format=pyaudio.paInt16, channels = 2, rate = 8000, input=True, frames_per_buffer=44100)
 stream.start_stream()
-while y != 'отключи микрофон' and y != 'подключи микрофон' and y != 'выключи микрофон' and y != 'включи микрофон' :
-data = stream.read(4000)
-if len(data) == 0:
-break
-if rec.AcceptWaveform(data):
-x = json.loads(rec.Result())
-print(x['text'])
-y = x['text']
-#доделать эту хрень снизу
-if y == 'включи музыку' or y == 'печи музыку':
-#defolt.play()
-#leto.play()
-defolt.play()
-y = 'fhgdfsdfvh jblkdfjs'
-if y == 'выключи музыку':
-#defolt.stop()
-#private.stop()
-y = 'fhgdfsdfvh jblkdfjs'
-if y == 'поставь на паузу' or y == 'поставь на полу' or y == 'пока на паузу':
-#defolt.pause()
-y = 'fhgdfsdfvh jblkdfjs'
-if y == 'возобновить' or y == 'выгодной' or y == 'выгодно ли':
-#defolt.resume()
-y = 'fhgdfsdfvh jblkdfjs'
-if y == 'протокол я один дома' or y == 'протокол один дома' or y == 'один дома'or y == 'а какую я один дом' or y == 'протокол я аденома' or y == 'протокол и один дома' or y == 'по такого и один дома' or y == 'по такого один дома' or y == 'атакуя и один дом' or y == 'атакуя один дом' or y == 'атакуя один дома' or y == 'протокол аденома':
-#private.play()
-y = 'dfhkdfsjkdlfsjfklfhdsc,kxckj'
-else:
-pass
+while end != False:
+    y = 'f'
+    xy = True
+    data = stream.read(4000)
+    if len(data) == 0:
+        break
+    if rec.AcceptWaveform(data):
+        x = json.loads(rec.Result())
+        print(x['text'])
+        y = x['text']
+    #доделать эту хрень снизу(и выключение)
+    if y == 'отключи микрофон' or y == 'подключи микрофон' or y == 'выключи микрофон' or y == 'включи микрофон':
+        end = False
+        yest.play()
+    if 'ютуб' in y:
+        if xy == True:
+            zapr.play()
+        g = y
+        a = str(g)
+        print(a)
+        l = a.split('ютубе ')
+        n = l[1]
+        print(n)
+        web.open(ytb+n)
+        xy = False
+    if 'инет' in y:
+        if xy == True:
+            zapr.play()
+        g = y
+        a = str(g)
+        print(a)
+        l = a.split('инете ')
+        n = l[1]
+        print(n)
+        web.open(www+n)
+        xy = False
+    if 'включи музыку' in y or 'печи музыку' in y:
+        i = ran.randint(1,6)
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        if f == False:
+            private.stop()
+            defolt.play()
+            f = True
+        xy = False
+    if 'выключи музыку' in y:
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        private.stop()
+        defolt.stop()
+        xy = False
+    if 'пауз' in y:
+        if xy == True:
+            sogl()
+        defolt.pause()
+        private.pause()
+        xy = False
+    if 'возобновить' in y or 'выгодной' in y or 'выгодно ли' in y:
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        if f == True:
+            defolt.play()
+        else:
+            private.play()
+        xy = False
+    if 'следующ' in y:
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        if f == True:
+            defolt.next()
+        else:
+            private.next()
+        xy = False
+    if 'предыдущ' in y:
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        if f == True:
+            defolt.previous()
+        else:
+            private.previous()
+        xy = False
+    if 'протокол' in y or 'один' in y or 'дом' in y or 'протокол я один дома' in y:
+        if xy == True:
+            sogl()
+        time.sleep(1)
+        f = False
+        private.play()
+        defolt.stop()
+        xy = False
+    if 'атмосферн' in y and ('фронт' in y or 'фон' in y or 'пан' in y or 'он' in y):
+        if xy == True:
+            sogl()
+        web.open('https://www.youtube.com/watch?v=_VTtXA2Cy-o')
+        xy = False
+    if 'жди' in y:
+        if xy == True:
+            diag()
+        while not 'джар' in y:
+            data = stream.read(4000)
+            if len(data) == 0:
+                break
+            if rec.AcceptWaveform(data):
+                x = json.loads(rec.Result())
+                print(x['text'])
+                y = x['text']
+        come()
+        xy = False
+    else:
+        pass
+yest.play()
