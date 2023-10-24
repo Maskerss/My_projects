@@ -10,16 +10,17 @@ import pyautogui as pag
 import random as ran
 import time
 import webbrowser as web
-#P.s. Дошёл до SFALL Row....
+from sound import *
+
 
 p = vlc
-playlist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3',"Komarovo.mp3",'Nirvana - Smells Like Teen Spirit.mp3','Dancing in My Room.mp3' ,'Dancin.mp3' ,'Five Degrees.mp3' ,
+playlist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3', 'Nirvana - Smells Like Teen Spirit.mp3','Dancing in My Room.mp3' ,'Dancin.mp3' ,'Five Degrees.mp3' ,
 'Decapitator.mp3' ,'Devil Eyes.mp3' , 'idfc.mp3','MONTERO.mp3' ,'Old Town Road.mp3','RagnBone Man - Human.mp3','Miyagi _ Andy Panda - Патрон.mp3','Seven Phoenix, PHAM - FOR U.mp3',
 'Old Town Road.mp3','Oliver Tree - Jerk.mp3','Pham, Malcolm Anthony - My Town.mp3','SFALL - row.mp3','Sam_Tinnesz_feat_Yacht_Money_Play_with_Fire_feat_Yacht_Money.mp3',
 'Real cool man.mp3','Mask Off.mp3'])
 defolt = p.MediaListPlayer()
 defolt.set_media_list(playlist)
-niggalist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3',"Komarovo.mp3",'Dancing in My Room.mp3' ,'Dancin.mp3' ,'astral-step.mp3','S.X.N.D. N.X.D.E.S..mp3',
+niggalist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_кончится_лето_fonk.mp3','Dancing in My Room.mp3' ,'Dancin.mp3' ,'astral-step.mp3','S.X.N.D. N.X.D.E.S..mp3',
 'Scary Garry.mp3','Nirvana - Smells Like Teen Spirit.mp3','ДРИПСЕТ.mp3' ,'Gimme The Loot.mp3','PUSHNOY_NIRVENUS_2_0_NIRVANA_&_Shocking_Blue_mashup_MP3Ball_ru.mp3',
 'LILDRUGHILL feat. ROCKET - Терминал.mp3','MONTERO.mp3','Miyagi _ Andy Panda - Патрон.mp3','Old Town Road.mp3','Oliver Tree - Jerk.mp3','Pham, Malcolm Anthony - My Town.mp3',
 'RagnBone Man - Human.mp3','Real cool man.mp3','Sam_Tinnesz_feat_Yacht_Money_Play_with_Fire_feat_Yacht_Money.mp3',
@@ -28,7 +29,7 @@ niggalist = p.MediaList(["Midnight Club.mp3",'Виктор_Цой_Скоро_к�
 'Seven Phoenix, PHAM - FOR U.mp3','PHARAOH - Не по пути.mp3','Markul - Миражи.mp3','Markul - 2 минуты.mp3','Markul - Phantom.mp3','Markul - Деньги на ветер.mp3','Markul - 25.mp3',
 'Markul - Серпантин.mp3','Markul - Конфеты.mp3','plenka - Closed.mp3','Aglow.mp3','Mask Off.mp3'])
 private = p.MediaListPlayer()
-private.set_media_list(playlist)
+private.set_media_list(niggalist)
 #Ответы Джарвиса
 mixer.init()
 yes1 = mixer.Sound('Да сэр.wav')
@@ -51,12 +52,16 @@ def come():
     r = yslyg.play, re.play, check_end.play
     chosen = ran.choice(r)
     chosen()
-
+def yes():
+    l = yes1.play, yes2.play
+    chosen = ran.choice(l)
+    chosen()
 def sogl():
     l = yes1.play, yes2.play, yest.play, load.play, zhel.play
     chosen = ran.choice(l)
     chosen()
 #ссылки
+gsm = 'https://www.gismeteo.ru/weather-stary-oskol-5024/'
 ytb = 'https://www.youtube.com/results?search_query='
 www = 'https://www.google.com/search?q='
 #нужные пременные
@@ -78,10 +83,14 @@ while end != False:
         x = json.loads(rec.Result())
         print(x['text'])
         y = x['text']
-    #доделать эту хрень снизу(и выключение)
+    if 'джар' in y:
+        if xy == True:
+            yes()
+        xy = False
     if y == 'отключи микрофон' or y == 'подключи микрофон' or y == 'выключи микрофон' or y == 'включи микрофон':
-        end = False
         yest.play()
+        time.sleep(1)
+        end = False
     if 'ютуб' in y:
         if xy == True:
             zapr.play()
@@ -104,6 +113,86 @@ while end != False:
         print(n)
         web.open(www+n)
         xy = False
+    if 'погод' in y:
+        if xy == True:
+            zapr.play()
+        if 'завтра' in y:
+            web.open(gsm + 'tomorrow')
+        else:
+            web.open(gsm)
+            xy = False
+    if 'разверни' in y:
+        pag.press('f')
+        sogl()
+    if 'открой' in y:
+        if 'вконтакт' in y or 'быка' in y or 'лука' in y or 'вака' in y:
+            sogl()
+            web.open('https://vk.com/feed')
+        if 'телег' in y: 
+            sogl()
+            os.startfile('G:\проги\Telegram_Desktop\Telegram.exe')
+        if 'декор' in y or 'корт' in y: 
+            sogl()
+            os.startfile(r'C:\Users\PCMan\AppData\Local\Discord\app-1.0.9013\Discord.exe')
+    if 'закрой' in y:
+        if 'телег' in y: 
+            sogl()
+            os.system('TASKKILL /IM Telegram.exe /T')
+        if 'декор' in y or 'корт' in y: 
+            sogl()
+            os.system('TASKKILL /IM Discord.exe /T')
+    #Всё, связанное с громкостью
+    if 'громче' in y:
+        sogl()
+        Sound.volume_up()
+        Sound.volume_up()
+        Sound.volume_up()
+        Sound.volume_up()
+        Sound.volume_up()
+    if 'тише' in y:
+        sogl()
+        Sound.volume_down()
+        Sound.volume_down()
+        Sound.volume_down()
+        Sound.volume_down()
+        Sound.volume_down()
+    if 'громко'in y and 'максимум' in y:
+        sogl()
+        Sound.volume_max()
+    if 'минимум' in y:
+        sogl()
+        Sound.volume_min()
+    if 'громкость на десять' in y:
+        sogl()
+        Sound.volume_set(10)
+    if 'громкость на два' in y:
+        sogl()
+        Sound.volume_set(20)
+    if 'громкость на тридцать' in y:
+        sogl()
+        Sound.volume_set(30)
+    if 'громкость на сорок' in y:
+        sogl()
+        Sound.volume_set(40)
+    if ' пятьдесят' in y or 'громко наполовин' in y or 'громкость наполовин' in y:
+        sogl()
+        Sound.volume_set(50)
+    if 'громкость на шесть' in y:
+        sogl()
+        Sound.volume_set(60)
+    if 'громкость на семь' in y:
+        sogl()
+        Sound.volume_set(70)
+    if 'громкость на восемь' in y:
+        sogl()
+        Sound.volume_set(80)
+    if 'громкость на девяносто' in y:
+        sogl()
+        Sound.volume_set(90)
+    if 'громкость на сто' in y:
+        sogl()
+        Sound.volume_set(100)
+    #Конец всего, связанного со звуком=)
     if 'включи музыку' in y or 'печи музыку' in y:
         i = ran.randint(1,6)
         if xy == True:
@@ -137,6 +226,7 @@ while end != False:
             private.play()
         xy = False
     if 'следующ' in y:
+        
         if xy == True:
             sogl()
         time.sleep(1)
@@ -154,7 +244,7 @@ while end != False:
         else:
             private.previous()
         xy = False
-    if 'протокол' in y or 'один' in y or 'дом' in y or 'протокол я один дома' in y:
+    if 'один дома' in y or 'протокол я один дома' in y:
         if xy == True:
             sogl()
         time.sleep(1)
@@ -180,6 +270,8 @@ while end != False:
                 y = x['text']
         come()
         xy = False
+    if 'выключи компьютер' in y or 'выключи компьютер' in y:
+        sogl()
+        os.system('shutdown -s -t 0')
     else:
         pass
-yest.play()
