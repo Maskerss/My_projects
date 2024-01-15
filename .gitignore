@@ -1,0 +1,9 @@
+/Jarvis_beta/
+.vscode/
+.idea/
+/Jarvis Sound Pack от Jarvis Desktop/
+/pre-release/
+/model/
+/vosk/
+*wav
+*rar
