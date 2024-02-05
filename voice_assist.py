@@ -20,7 +20,7 @@ import pyautogui as pag
 import random as ran
 import time
 import webbrowser as web
-from keyboard import press_and_release
+from keyboard import press_and_release, press, release, write
 import cv2
 import mediapipe as mp
 import threading
@@ -226,7 +226,7 @@ def microphone():
         if 'разверни' in y:
             if xy == True:
                 sogl()
-            press_and_release('f')
+            press_and_release('а')
             xy = False
 
         if 'открой' in y:
