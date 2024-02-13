@@ -1,14 +1,3 @@
-# import getpass
-# USER_NAME = getpass.getuser()
-
-# def add_to_startup(file_path=""):
-#     if file_path == "":
-#         file_path = os.path.dirname(os.path.realpath(__file__))
-#     bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup' % PCMan
-#     with open(bat_path + '\\' + "open.bat", "w+") as bat_file:
-#         bat_file.write(r'start "" %s' % file_path)
-
-
 from vosk import Model, KaldiRecognizer
 import ffmpeg
 import os
@@ -24,13 +13,6 @@ from keyboard import press_and_release
 import cv2
 import mediapipe as mp
 import threading
-
-
-
-
-
-
-
 
 
 def hand_recognizer():
@@ -105,12 +87,14 @@ def hand_recognizer():
                         msg = '$' + str(width) + ';'
                     if not (finger[0]) and finger[1] and not (finger[2]) and not (finger[3]) and not (finger[4]):
                         msg = '#' + str(width) + ';'
+                        
+                    # greece)
                     if not (finger[0]) and not (finger[1]) and finger[2] and not (finger[3]) and not (finger[4]):
                         msg = '*' + str(width) + ';'
                         press_and_release('volume down')
 
-                    print(msg, finger[0], finger[1],
-                        finger[2], finger[3], finger[4])
+                    # print(msg, finger[0], finger[1],
+                    #     finger[2], finger[3], finger[4])
             cv2.waitKey(1)
     except:
         print('No camera')
@@ -172,285 +156,319 @@ def microphone():
         y = 'f'
         xy = True
         data = stream.read(4000)
-        if len(data) == 0:
-            break
-        if rec.AcceptWaveform(data):
-            x = json.loads(rec.Result())
-            print(x['text'])
-            y = x['text']
+        try:
+            if len(data) == 0:
+                break
+            if rec.AcceptWaveform(data):
+                x = json.loads(rec.Result())
+                print(x['text'])
+                y = x['text']
 
-        if 'джар' in y:
-            if xy == True:
-                yes()
-            xy = False
-        if y == 'отключи микрофон' or y == 'подключи микрофон' or y == 'выключи микрофон' or y == 'включи микрофон':
-            yest.play()
-            time.sleep(1)
-            run = False
-        if 'ютуб' in y:
-            if xy == True:
-                zapr.play()
-            g = y
-            a = str(g)
-            print(a)
-            try:
-                l = a.split('ютубе ')
-                n = l[1]
-                print(n)
-                web.open(f'{ytb}/results?search_query={n}')
-            except:
-                web.open(ytb)
-            xy = False
-        if 'инет' in y or 'интернет' in y:
-            if xy == True:
-                zapr.play()
-            g = y
-            a = str(g)
-            print(a)
-            if 'инете' in a:
-                l = a.split('инете')
-            else:
-                l = a.split('интернете')
-            n = l[-1]
-            web.open(www+n)
-            xy = False
+            if 'джар' in y:
+                if xy == True:
+                    yes()
+                xy = False
+            if y == 'отключи микрофон' or y == 'подключи микрофон' or y == 'выключи микрофон' or y == 'включи микрофон':
+                yest.play()
+                time.sleep(1)
+                run = False
+            if 'ютуб' in y:
+                if xy == True:
+                    zapr.play()
+                g = y
+                a = str(g)
+                print(a)
+                try:
+                    l = a.split('ютубе ')
+                    n = l[1]
+                    print(n)
+                    web.open(f'{ytb}/results?search_query={n}')
+                except:
+                    web.open(ytb)
+                xy = False
+            if 'инет' in y or 'интернет' in y:
+                if xy == True:
+                    zapr.play()
+                g = y
+                a = str(g)
+                print(a)
+                if 'инете' in a:
+                    l = a.split('инете')
+                else:
+                    l = a.split('интернете')
+                n = l[-1]
+                web.open(www+n)
+                xy = False
 
-        if 'погод' in y:
-            if xy == True:
-                zapr.play()
-            if 'завтра' in y:
-                web.open(gsm + 'tomorrow')
-            else:
-                web.open(gsm)
-            xy = False
-        if 'разверни' in y:
-            if xy == True:
-                sogl()
-            press_and_release('f')
-            xy = False
+            if 'погод' in y:
+                if xy == True:
+                    zapr.play()
+                if 'завтра' in y:
+                    web.open(gsm + 'tomorrow')
+                else:
+                    web.open(gsm)
+                xy = False
+            if 'разверни' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('f')
+                xy = False
 
-        if 'открой' in y:
-            if xy == True:
-                sogl()
-            if 'вконтакт' in y or 'быка' in y or 'лука' in y or 'вака' in y:
+            if 'открой' in y:
+                if 'вконтакт' in y or 'быка' in y or 'лука' in y or 'вака' in y:
+                    if xy == True:
+                        sogl()
+                    web.open('https://vk.com/feed')
+                if 'телег' in y:
+                    if xy == True:
+                        sogl()
+                    # path to telegram
+                    os.startfile(
+                        r"C:\Progs\Telegram\Telegram Desktop\Telegram.exe")
+                if 'декор' in y or 'корт' in y:
+                    if xy == True:
+                        sogl()
+                    # path to discord
+                    os.startfile(r'C:\Users\PCMan\AppData\Local\Discord\app-1.0.9032\Discord.exe')
+                xy = False
+
+            if 'закрой' in y:
+                if xy == True:
+                    sogl()
+                if 'телег' in y:
+                    os.system('TASKKILL /IM Telegram.exe /T')
+                if 'декор' in y or 'корт' in y:
+                    os.system('TASKKILL /IM Discord.exe /T')
+                xy = False
+
+            # Всё, связанное с громкостью
+            if 'громче' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('volume up')
+                press_and_release('volume up')
+                press_and_release('volume up')
+                xy = False
+
+            if 'тише' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('volume down')
+                press_and_release('volume down')
+                press_and_release('volume down')
+                xy = False
+
+
+            if 'громко' in y:
+                try:
+                    # Подготовка входных данных
+                    try:
+                        vol = y.split('громкость ')[-1]
+                    except:
+                        vol = y.split('громко ')[-1]
+                    if 'на ' in y:
+                        vol = vol.split('на ')[-1]
+                    # условия
+                    match vol:
+                        case 'ноль' | 'выключи звук':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'минимум':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+                            
+                        case 'десять':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(5):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'два' | 'двадцать':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(10):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'три' | 'тридцать':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(15):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'сорок':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(20):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'пять' | 'пятьдесят' | 'наполовин':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(25):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'шесть' | 'шестьдесят':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(30):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'семь' | 'семьдесят':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(35):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'восемь' | 'восемьдесят':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(40):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'девяносто' | 'девять':
+                            for i in range(100):
+                                press_and_release('volume down')
+                            for i in range(45):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+
+                        case 'максимум' | 'сто':
+                            for i in range(100):
+                                press_and_release('volume up')
+                            if xy == True:
+                                sogl()
+                            xy = False
+                except:
+                    pass
+            # Конец всего, связанного со звуком=)
+
+
+            # Музыка
+            if 'включи музыку' in y or 'печи музыку' in y:
+                if xy == True:
+                    sogl()
                 web.open('https://vk.com/feed')
-            if 'телег' in y:
-                os.startfile(
-                    r"C:\Progs\Telegram\Telegram Desktop\Telegram.exe")
-            if 'декор' in y or 'корт' in y:
-                os.startfile(
-                    r'C:\Users\PCMan\AppData\Local\Discord\Update.exe --processStart Discord.exe')
-            xy = False
+                time.sleep(3)
+                press_and_release('play/pause media')
+                xy = False
 
-        if 'закрой' in y:
-            if xy == True:
+            if 'выключи музыку' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('stop media')
+                xy = False
+
+            if 'пауз' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('play/pause media')
+                xy = False
+
+            if 'возобновить' in y or 'выгодной' in y or 'выгодно ли' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('play/pause media')
+                xy = False
+
+            if 'следующ' in y:
+                if xy == True:
+                    sogl()
+                    press_and_release('next track')
+                xy = False
+
+            if 'предыдущ' in y:
+                if xy == True:
+                    sogl()
+                press_and_release('previous track')
+                xy = False
+        # Протоколы
+            if 'один дома' in y or 'протокол я один дома' in y:
+                if xy == True:
+                    sogl()
+                time.sleep(1)
+                web.open('https://www.youtube.com')
+                web.open('https://vk.com/feed')
+                os.startfile(r"C:\Progs\Telegram\Telegram Desktop\Telegram.exe")
+                os.startfile(r"C:\Program Files\Algoritmika\vscode\Code.exe")
+                os.startfile(r"C:\Progs\Steam\steam.exe")
+                time.sleep(3)
+                press_and_release('play/pause media')   
+                xy = False
+
+            if 'за работу' in y or 'протокол за работу' in y:
+                if xy == True:
+                    sogl()
+                time.sleep(1)
+                web.open('https://vk.com/feed')
+                os.startfile(r"C:\Progs\Telegram\Telegram Desktop\Telegram.exe")
+                os.startfile(r"C:\Program Files\Algoritmika\vscode\Code.exe")
+                time.sleep(3)
+                press_and_release('play/pause media')   
+                xy = False
+
+
+            if 'атмосферн' in y and ('фронт' in y or 'фон' in y or 'пан' in y or 'он' in y):
+                if xy == True:
+                    sogl()
+                web.open('https://www.youtube.com/watch?v=_VTtXA2Cy-o')
+                xy = False
+
+            if 'жди' in y:
+                if xy == True:
+                    diag()
+                while not 'джар' in y:
+                    data = stream.read(4000)
+                    if len(data) == 0:
+                        break
+                    if rec.AcceptWaveform(data):
+                        x = json.loads(rec.Result())
+                        print(x['text'])
+                        y = x['text']
+                come()
+                xy = False
+
+            if 'выключи компьютер' in y or 'выключи компьютер' in y:
                 sogl()
-            if 'телег' in y:
-                os.system('TASKKILL /IM Telegram.exe /T')
-            if 'декор' in y or 'корт' in y:
-                os.system('TASKKILL /IM Discord.exe /T')
-            xy = False
-
-        # Всё, связанное с громкостью
-        if 'громче' in y:
-            if xy == True:
-                sogl()
-            press_and_release('volume up')
-            press_and_release('volume up')
-            press_and_release('volume up')
-            xy = False
-
-        if 'тише' in y:
-            if xy == True:
-                sogl()
-            press_and_release('volume down')
-            press_and_release('volume down')
-            press_and_release('volume down')
-            xy = False
-
-        if 'громко' in y and 'минимум' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' ноль' in y or 'выключи звук' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' десять':
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(5):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' два' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(10):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' три' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(15):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' сорок' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(20):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if ('громко' in y and ' пять' in y) or ('громко' in y and ' наполовин' in y):
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(25):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' шесть' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(30):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' семь' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(35):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' восемь' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(40):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if 'громко' in y and ' девяносто' in y:
-            for i in range(100):
-                press_and_release('volume down')
-            for i in range(45):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        if ('громко' in y and 'максимум' in y) or ('громко' in y and ' сто' in y):
-            for i in range(100):
-                press_and_release('volume up')
-            if xy == True:
-                sogl()
-            xy = False
-
-        # Конец всего, связанного со звуком=)
-
-        # Музыка
-        if 'включи музыку' in y or 'печи музыку' in y:
-            if xy == True:
-                sogl()
-            web.open('https://vk.com/feed')
-            time.sleep(3)
-            press_and_release('play/pause media')
-            xy = False
-
-        if 'выключи музыку' in y:
-            if xy == True:
-                sogl()
-            press_and_release('stop media')
-            xy = False
-
-        if 'пауз' in y:
-            if xy == True:
-                sogl()
-            press_and_release('play/pause media')
-            xy = False
-
-        if 'возобновить' in y or 'выгодной' in y or 'выгодно ли' in y:
-            if xy == True:
-                sogl()
-            press_and_release('play/pause media')
-            xy = False
-
-        if 'следующ' in y:
-            if xy == True:
-                sogl()
-                press_and_release('next track')
-            xy = False
-
-        if 'предыдущ' in y:
-            if xy == True:
-                sogl()
-            press_and_release('previous track')
-            xy = False
-    # Протоколы
-        if 'один дома' in y or 'протокол я один дома' in y:
-            if xy == True:
-                sogl()
-            time.sleep(1)
-            web.open('https://www.youtube.com')
-            web.open('https://vk.com/feed')
-            os.startfile(r"C:\Progs\Telegram\Telegram Desktop\Telegram.exe")
-            os.startfile(r"C:\Program Files\Algoritmika\vscode\Code.exe")
-            os.startfile(r"C:\Progs\Steam\steam.exe")
-            time.sleep(3)
-            press_and_release('play/pause media')   
-            xy = False
-
-        if 'атмосферн' in y and ('фронт' in y or 'фон' in y or 'пан' in y or 'он' in y):
-            if xy == True:
-                sogl()
-            web.open('https://www.youtube.com/watch?v=_VTtXA2Cy-o')
-            xy = False
-
-        if 'жди' in y:
-            if xy == True:
-                diag()
-            while not 'джар' in y:
-                data = stream.read(4000)
-                if len(data) == 0:
-                    break
-                if rec.AcceptWaveform(data):
-                    x = json.loads(rec.Result())
-                    print(x['text'])
-                    y = x['text']
-            come()
-            xy = False
-
-        if 'выключи компьютер' in y or 'выключи компьютер' in y:
-            sogl()
-            time.sleep(2)
-            os.system('shutdown -s -t 0')
-        else:
-            pass
+                time.sleep(2)
+                os.system('shutdown -s -t 0')
+            else:
+                pass
+        except:
+            run = False
 
 
 thread = threading.Thread(target=microphone)
