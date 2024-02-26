@@ -1,3 +1,4 @@
+
 from vosk import Model, KaldiRecognizer
 import ffmpeg
 import os
@@ -15,6 +16,13 @@ import mediapipe as mp
 import threading
 
 
+
+
+
+
+
+
+
 def hand_recognizer():
     try:
         # получаем изображение с камеры (0 - порядковый номер камеры в системе)
@@ -23,8 +31,12 @@ def hand_recognizer():
         hands = mpHands.Hands()                 # создаем объект класса "руки"
         mpDraw = mp.solutions.drawing_utils     # подключаем инструменты для рисования
 
+
+
         # создаем массив из 21 ячейки для хранения высоты каждой точки
-        p = [0 for i in range(21)]
+        h = [0 for i in range(21)]
+        w = [0 for i in range(21)]
+
         # создаем массив из 5 ячеек для хранения положения каждого пальца
         finger = [0 for i in range(5)]
 
@@ -37,6 +49,10 @@ def hand_recognizer():
             good, img = camera.read()
             # преобразуем кадр в RGB
             imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+
+            if cv2.waitKey(1) & 0xFF == 27:     # ждем нажатия клавиши q в течение 1 мс
+                break             # если нажмут, всё закрываем
 
             # получаем результат распознавания
             results = hands.process(imgRGB)
@@ -52,9 +68,12 @@ def hand_recognizer():
                         # получаем размеры изображения с камеры и масштабируем
                         width, height, color = img.shape
                         width, height = int(point.x * height), int(point.y * width)
+                        
 
                         # заполняем массив высотой каждой точки
-                        p[id] = height
+                        h[id] = height
+                        w[id] = width
+
                         if id == 8:              # выбираем нужную точку
                             # рисуем нужного цвета кружок вокруг выбранной точки
                             cv2.circle(img, (width, height), 15,
@@ -64,14 +83,19 @@ def hand_recognizer():
                                     (0, 0, 255), cv2.FILLED)
 
                     # получаем расстояние, с которым будем сравнивать каждый палец
-                    distanceGood = distance(
-                        p[0], p[3]) + (distance(p[0], p[2]) / 2)
+                    distanceGoodH = distance(
+                        h[0], h[3]) + (distance(h[0], h[2]) / 2)
+
+                    distanceGoodW = distance(
+                        w[0], w[3]) + (distance(w[0], w[2]) / 2)
                     # заполняем массив 1 (палец поднят) или 0 (палец сжат)
-                    finger[1] = 1 if distance(p[0], p[8]) > distanceGood else 0
-                    finger[2] = 1 if distance(p[0], p[12]) > distanceGood else 0
-                    finger[3] = 1 if distance(p[0], p[16]) > distanceGood else 0
-                    finger[4] = 1 if distance(p[0], p[20]) > distanceGood else 0
-                    finger[0] = 1 if distance(p[4], p[20]) > distanceGood else 0
+                    finger[1] = 1 if distance(h[0], h[8]) > distanceGoodH or distance(w[0], w[8]) > distanceGoodW else 0
+                    finger[2] = 1 if distance(h[0], h[12]) > distanceGoodH or distance(w[0], w[12]) > distanceGoodW else 0
+                    finger[3] = 1 if distance(h[0], h[16]) > distanceGoodH or distance(w[0], w[16]) > distanceGoodW else 0
+                    finger[4] = 1 if distance(h[0], h[20]) > distanceGoodH or distance(w[0], w[20]) > distanceGoodW else 0
+                    finger[0] = 1 if distance(h[4], h[20]) > distanceGoodH or distance(w[4], w[20]) > distanceGoodW else 0
+
+
 
                     # готовим сообщение для отправки
                     msg = ''
@@ -93,9 +117,10 @@ def hand_recognizer():
                         msg = '*' + str(width) + ';'
                         press_and_release('volume down')
 
-                    # print(msg, finger[0], finger[1],
-                    #     finger[2], finger[3], finger[4])
+                    print(msg, finger[0], finger[1],
+                        finger[2], finger[3], finger[4])
             cv2.waitKey(1)
+            cv2.imshow("Image", img)       # выводим окно с нашим изображением
     except:
         print('No camera')
 
@@ -374,7 +399,7 @@ def microphone():
                             xy = False
                 except:
                     pass
-            # Конец всего, связанного со звуком=)
+            # Конец всего, связанного с громкостью=)
 
 
             # Музыка
@@ -429,7 +454,7 @@ def microphone():
                 press_and_release('play/pause media')   
                 xy = False
 
-            if 'за работу' in y or 'протокол за работу' in y:
+            if 'за работу' in y or 'на работу' in y or 'протокол за работу' in y:
                 if xy == True:
                     sogl()
                 time.sleep(1)
